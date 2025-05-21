@@ -204,6 +204,20 @@ app.get("/products/:id", (req, res) => {
   });
 });
 
+// GET CATEGORY by ID
+app.get("/categories/:id", (req, res) => {
+  const productId = req.params.id;
+  const sql = `SELECT * 
+    FROM category 
+    WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

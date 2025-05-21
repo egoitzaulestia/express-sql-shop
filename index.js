@@ -103,18 +103,35 @@ app.post("/categories", (req, res) => {
 // ADD PRODUCT (by POST method)
 app.post("/products", (req, res) => {
   const newProduct = {
-    category: req.body.category,
+    category_id: req.body.category_id,
     name: req.body.name,
     price: req.body.price,
   };
 
   const sql = `INSERT INTO product (category_id, name, price)
-    VALUES (${newProduct.category}, '${newProduct.name}', ${newProduct.price});`;
+    VALUES (${newProduct.category_id}, '${newProduct.name}', ${newProduct.price});`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send({ message: "Product added correctly", result });
+  });
+});
+
+// UPDATE PRODUCT (by PUT method)
+app.put("/products/id/:id", (req, res) => {
+  const productId = +req.params.id;
+  const { category_id, name, price } = req.body;
+  const sql = `UPDATE product SET 
+    category_id = ${category_id}, 
+    name = '${name}', 
+    price = ${price}
+    WHERE id = ${productId};`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(`Product ${productId} has been updated...`);
   });
 });
 

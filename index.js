@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const app = express();
 const PORT = 3000;
-app.use(express());
+app.use(express.json());
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -84,6 +84,37 @@ app.get("/dropTable/:table", (req, res) => {
     if (err) throw err;
     console.log(result);
     res.send(`Table ${tableName} has been erased...`);
+  });
+});
+
+// ADD CATEGORY (by POST method)
+app.post("/categories", (req, res) => {
+  const newCategory = req.body.name;
+  const sql = `INSERT INTO category (name) 
+    VALUES ('${newCategory}')`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: "New category added correctly", result });
+  });
+});
+
+// ADD PRODUCT (by POST method)
+app.post("/products", (req, res) => {
+  const newProduct = {
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+  };
+
+  const sql = `INSERT INTO product (category_id, name, price)
+    VALUES (${newProduct.category}, '${newProduct.name}', ${newProduct.price});`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: "Product added correctly", result });
   });
 });
 

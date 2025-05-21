@@ -135,6 +135,21 @@ app.put("/products/id/:id", (req, res) => {
   });
 });
 
+// UPDATE CATEGORY (by PUT method)
+app.put("categories/id/:id", (req, res) => {
+  const productId = req.params.id;
+  const { name } = req.body;
+  const sql = `UPDATE category SET
+    name = '${name}'
+    WHERE id = ${productId};`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(`Category ${productId} has been updated`);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

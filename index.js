@@ -232,6 +232,19 @@ app.get("/products/order/by-price-desc", (req, res) => {
   });
 });
 
+app.get("/products/name/:name", (req, res) => {
+  const productName = req.params.name;
+  const sql = `SELECT * 
+    FROM product 
+    WHERE name = ?`;
+
+  db.query(sql, [req.params.name], (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

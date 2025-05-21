@@ -150,6 +150,28 @@ app.put("categories/id/:id", (req, res) => {
   });
 });
 
+// GET ALL product
+app.get("/products", (req, res) => {
+  const sql = `SELECT * FROM product;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL categories
+app.get("/categories", (req, res) => {
+  const sql = `SELECT * FROM category;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

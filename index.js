@@ -150,7 +150,7 @@ app.put("categories/id/:id", (req, res) => {
   });
 });
 
-// GET ALL product
+// GET ALL P (product)
 app.get("/products", (req, res) => {
   const sql = `SELECT * FROM product;`;
 
@@ -161,9 +161,27 @@ app.get("/products", (req, res) => {
   });
 });
 
-// GET ALL categories
+// GET ALL C (categories)
 app.get("/categories", (req, res) => {
   const sql = `SELECT * FROM category;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL PC (products with their categoríes)
+app.get("/productsWithCategories", (req, res) => {
+  const sql = `SELECT 
+    p.name AS product_name,
+    c.name AS category_name,
+    p.price
+    FROM product AS p
+    INNER JOIN category AS c
+    ON c.id = p.category_id
+    `;
 
   db.query(sql, (err, result) => {
     if (err) throw err;

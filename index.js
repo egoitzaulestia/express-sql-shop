@@ -173,7 +173,7 @@ app.get("/categories", (req, res) => {
 });
 
 // GET ALL PC (products with their categoríes)
-app.get("/productsWithCategories", (req, res) => {
+app.get("/products-with-categories", (req, res) => {
   const sql = `SELECT 
     p.name AS product_name,
     c.name AS category_name,
@@ -210,6 +210,20 @@ app.get("/categories/:id", (req, res) => {
   const sql = `SELECT * 
     FROM category 
     WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL P (product) DESC
+app.get("/products/order/by-price-desc", (req, res) => {
+  const sql = `SELECT * 
+    FROM product
+    ORDER BY price
+    DESC;`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;

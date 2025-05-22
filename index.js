@@ -13,6 +13,8 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+// CREATE DATABASE and DROP DATABASE
+
 // CREATE DATABASE endpoint to create the database
 app.get("/createDatabase", (req, res) => {
   const dbName = "expressSqlShopDB";
@@ -36,6 +38,8 @@ app.get("/dropDatabase", (req, res) => {
     res.send(`The ${dbName} database has been erased...`);
   });
 });
+
+// CREATE TABLES and DROP TABLE
 
 // CREATE TABLE 'category'
 app.get("/createCategoryTable", (req, res) => {

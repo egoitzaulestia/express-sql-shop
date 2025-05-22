@@ -13,10 +13,11 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+//////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
 
 // CREATE DATABASE endpoint to create the database
-app.get("/createDatabase", (req, res) => {
+app.get("/create-database", (req, res) => {
   const dbName = "expressSqlShopDB";
   const sql = `CREATE DATABASE ${dbName}`;
 
@@ -28,7 +29,7 @@ app.get("/createDatabase", (req, res) => {
 });
 
 // DROP DATABASE endpoint to erase the database
-app.get("/dropDatabase", (req, res) => {
+app.get("/drop-database", (req, res) => {
   const dbName = "expressSqlShopDB";
   const sql = `DROP DATABASE ${dbName}`;
 
@@ -39,14 +40,16 @@ app.get("/dropDatabase", (req, res) => {
   });
 });
 
+/////////////////////////////////
 // CREATE TABLES and DROP TABLE
 
 // CREATE TABLE 'category'
-app.get("/createCategoryTable", (req, res) => {
-  const sql = `CREATE TABLE category (
+app.get("/create-category-table", (req, res) => {
+  const sql = `
+  CREATE TABLE category (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100)
-    ) ENGINE=InnoDB`;
+  ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -56,8 +59,9 @@ app.get("/createCategoryTable", (req, res) => {
 });
 
 // CREATE TABLE 'product'
-app.get("/createProductTable", (req, res) => {
-  const sql = `CREATE TABLE product (
+app.get("/create-product-table", (req, res) => {
+  const sql = `
+  CREATE TABLE product (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT,
     name VARCHAR(150), 
@@ -68,7 +72,7 @@ app.get("/createProductTable", (req, res) => {
     REFERENCES category(id)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
-    ) ENGINE=InnoDB`;
+  ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -78,11 +82,12 @@ app.get("/createProductTable", (req, res) => {
 });
 
 // CREATE TABLE 'user'
-app.get("/createUserTable", (req, res) => {
-  const sql = `CREATE TABLE user (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(80),
-  email VARCHAR(120)
+app.get("/create-user-table", (req, res) => {
+  const sql = `
+  CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(80),
+    email VARCHAR(120)
   ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
@@ -93,24 +98,55 @@ app.get("/createUserTable", (req, res) => {
 });
 
 // CREATE TABLE 'orders'
-app.get("/createOrdersTable", (req, res) => {
-  const sql = `CREATE TABLE orders (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  total DECIMAL(10, 2) NOT NULL,
+app.get("/create-orders-table", (req, res) => {
+  const sql = `
+  CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    total DECIMAL(10, 2) NOT NULL,
 
-  CONSTRAINT fk_order_user
-    FOREIGN KEY (user_id)
-    REFERENCES user(id)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT
+    CONSTRAINT fk_order_user
+      FOREIGN KEY (user_id)
+      REFERENCES user(id)
+      ON UPDATE CASCADE
+      ON DELETE RESTRICT
   ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(`Table orders has been created.`);
+  });
+});
+
+// // CREATE TABLE 'order_productt' => (orderS + product)
+app.get("/create-order-product-table", (req, res) => {
+  const sql = `
+    CREATE TABLE order_product (
+      order_id INT NOT NULL,
+      product_id INT NOT NULL,
+      quantity INT NOT NULL DEFAULT 1,
+      price_each DECIMAL(10,2) NOT NULL,
+
+      PRIMARY KEY (order_id, product_id),
+
+      CONSTRAINT fk_op_order
+        FOREIGN KEY (order_id)
+        REFERENCES orders(id)
+        ON DELETE CASCADE,
+
+      CONSTRAINT fk_op_product
+        FOREIGN KEY (product_id)
+        REFERENCES product(id)
+        ON DELETE RESTRICT
+    ) ENGINE=InnoDB;
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send("Table order_product has been created.");
   });
 });
 
@@ -125,6 +161,9 @@ app.get("/dropTable/:table", (req, res) => {
     res.send(`Table ${tableName} has been deleted.`);
   });
 });
+
+//////////////
+// ADD STUFF
 
 // ADD CATEGORY (by POST method)
 app.post("/categories", (req, res) => {

@@ -407,9 +407,9 @@ app.get("/categories/:id", (req, res) => {
 // GET USER BY ID
 app.get("/users/:id", (req, res) => {
   const userId = req.params.id;
-  const sql = `SELECT * FROM user WHERE id = ${userId};`;
+  const sql = `SELECT * FROM user WHERE id = ?`;
 
-  db.query(sql, (err, result) => {
+  db.query(sql, [userId], (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
@@ -447,7 +447,7 @@ app.get("/products/name/:name", (req, res) => {
 /////////////////
 // DLEETE BY ID
 
-// DELETE product
+// DELETE PRODUCT BY ID
 app.delete("/products/:id", (req, res) => {
   const productId = +req.params.id;
   const sql = `DELETE FROM product 
@@ -457,6 +457,31 @@ app.delete("/products/:id", (req, res) => {
     if (err) throw err;
     console.log(result);
     res.send({ message: `Product ${productId} has been deleted.` });
+  });
+});
+
+// DELETE USER BY ID
+app.delete("/users/:id", (req, res) => {
+  const userId = req.params.id;
+
+  const sqlDeleteOrders = `DELETE FROM orders WHERE user_id = ?;`;
+  const sqlDeleteUser = `DELETE FROM user WHERE id = ?;`;
+
+  // We delete any order (due to RESTRICT in table creation)
+  db.query(sqlDeleteOrders, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    console.log(result1);
+
+    // We delete the user
+    db.query(sqlDeleteUser, [userId], (err2, result2) => {
+      if (err2) throw err2;
+      console.log(result2);
+      res.send({
+        message: `User ${userId} and their orders have been deleted.`,
+        ordersDeleted: result1.affectedRows,
+        userDeleted: result2.affectedRows,
+      });
+    });
   });
 });
 

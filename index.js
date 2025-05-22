@@ -376,7 +376,7 @@ app.get("/users-with-orders", (req, res) => {
 //////////////
 // GET BY ID
 
-// GET PRODUCT by ID
+// GET PRODUCT BY ID
 app.get("/products/:id", (req, res) => {
   const productId = req.params.id;
   const sql = `SELECT * 
@@ -390,12 +390,24 @@ app.get("/products/:id", (req, res) => {
   });
 });
 
-// GET CATEGORY by ID
+// GET CATEGORY BY ID
 app.get("/categories/:id", (req, res) => {
   const productId = req.params.id;
   const sql = `SELECT * 
     FROM category 
     WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET USER BY ID
+app.get("/users/:id", (req, res) => {
+  const userId = req.params.id;
+  const sql = `SELECT * FROM user WHERE id = ${userId};`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;

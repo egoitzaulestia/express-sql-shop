@@ -402,19 +402,19 @@ app.get("/users-with-orders", (req, res) => {
 //   });
 // });
 
-// GET CATEGORY BY ID
-app.get("/categories/:id", (req, res) => {
-  const productId = req.params.id;
-  const sql = `SELECT * 
-    FROM category 
-    WHERE id = ${productId}`;
+// // GET CATEGORY BY ID
+// app.get("/categories/:id", (req, res) => {
+//   const productId = req.params.id;
+//   const sql = `SELECT *
+//     FROM category
+//     WHERE id = ${productId}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET USER BY ID
 app.get("/users/:id", (req, res) => {

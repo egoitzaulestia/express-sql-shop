@@ -311,24 +311,6 @@ app.get("/categories", (req, res) => {
   });
 });
 
-// GET ALL PC (products with their categoríes)
-app.get("/products-with-categories", (req, res) => {
-  const sql = `SELECT 
-    p.name AS product_name,
-    c.name AS category_name,
-    p.price
-    FROM product AS p
-    INNER JOIN category AS c
-    ON c.id = p.category_id
-    `;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
-
 // GET ALL USERS
 app.get("/users", (req, res) => {
   const sql = `SELECT * FROM user;`;
@@ -347,6 +329,46 @@ app.get("/orders", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
+    res.send(result);
+  });
+});
+
+////////////////////////////
+// GET ALL with INNER JOIN
+
+// GET ALL PRODUCTS with CATEGORIES
+app.get("/products-with-categories", (req, res) => {
+  const sql = `
+    SELECT 
+      p.name AS product_name,
+      c.name AS category_name,
+      p.price
+    FROM product AS p
+    INNER JOIN category AS c
+    ON c.id = p.category_id
+    `;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL USERS with ORDERS
+app.get("/users-with-orders", (req, res) => {
+  const sql = `
+    SELECT 
+      u.username,
+      o.created_at AS order_date,
+      o.total AS total_price
+    FROM user AS u
+    INNER JOIN orders AS o
+    ON u.id = o.user_id`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(err);
     res.send(result);
   });
 });
@@ -409,6 +431,9 @@ app.get("/products/name/:name", (req, res) => {
     res.send(result);
   });
 });
+
+/////////////////
+// DLEETE BY ID
 
 // DELETE product
 app.delete("/products/:id", (req, res) => {

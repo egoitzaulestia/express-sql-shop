@@ -211,19 +211,27 @@ app.post("/products", (req, res) => {
 app.post("/users", (req, res) => {
   const { username, email } = req.body;
   const sql = `
-    INSERT INTO user (
-      username,
-      email  
-    )
-    VALUES (
-      '${username}',
-      '${email}'
-    );`;
+    INSERT INTO user (username, email)
+    VALUES (?, ?);`;
 
-  db.query(sql, (err, result) => {
+  db.query(sql, [username, email], (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send({ message: "New user registered successfully", result });
+  });
+});
+
+// ADD ORDER (by POST method)
+app.post("/orders", (req, res) => {
+  const { user_id, total } = req.body;
+  const sql = `
+    INSERT INTO orders (user_id, total)
+    VALUES (?, ?)`;
+
+  db.query(sql, [user_id, total], (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: "New order registered successfully", result });
   });
 });
 
@@ -243,7 +251,7 @@ app.put("/products/id/:id", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Product ${productId} has been updated.`);
+    res.send({ message: `Product ${productId} has been updated.`, result });
   });
 });
 
@@ -258,9 +266,28 @@ app.put("categories/id/:id", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Category ${productId} has been updated.`);
+    res.send({ message: `Category ${productId} has been updated.`, result });
   });
 });
+
+// UPDATE USER (by PUT method)
+app.put("/users/id/:id", (req, res) => {
+  const userId = req.params.id;
+  const { username, email } = req.body;
+  const sql = `
+    UPDATE user 
+    SET username = ?, email = ?
+    WHERE id = ?;`;
+
+  db.query(sql, [username, email, userId], (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: `User ${userId} has been updated.`, result });
+  });
+});
+
+////////////
+// GET ALL
 
 // GET ALL P (product)
 app.get("/products", (req, res) => {
@@ -301,6 +328,31 @@ app.get("/products-with-categories", (req, res) => {
     res.send(result);
   });
 });
+
+// GET ALL USERS
+app.get("/users", (req, res) => {
+  const sql = `SELECT * FROM user;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL ORDERS
+app.get("/orders", (req, res) => {
+  const sql = `SELECT * FROM orders;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+//////////////
+// GET BY ID
 
 // GET PRODUCT by ID
 app.get("/products/:id", (req, res) => {

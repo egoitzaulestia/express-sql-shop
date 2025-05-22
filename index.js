@@ -22,7 +22,7 @@ db.connect((err) => {
   }
 });
 
-app.use("products", require("./routes/products"));
+app.use("/products", require("./routes/products"));
 
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
@@ -300,16 +300,16 @@ app.put("/users/id/:id", (req, res) => {
 ////////////
 // GET ALL
 
-// GET ALL P (product)
-app.get("/products", (req, res) => {
-  const sql = `SELECT * FROM product;`;
+// // GET ALL P (product)
+// app.get("/products", (req, res) => {
+//   const sql = `SELECT * FROM product;`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET ALL C (categories)
 app.get("/categories", (req, res) => {
@@ -347,24 +347,24 @@ app.get("/orders", (req, res) => {
 ////////////////////////////
 // GET ALL with INNER JOIN
 
-// GET ALL PRODUCTS with CATEGORIES
-app.get("/products-with-categories", (req, res) => {
-  const sql = `
-    SELECT 
-      p.name AS product_name,
-      c.name AS category_name,
-      p.price
-    FROM product AS p
-    INNER JOIN category AS c
-    ON c.id = p.category_id
-    `;
+// // GET ALL PRODUCTS with CATEGORIES
+// app.get("/products-with-categories", (req, res) => {
+//   const sql = `
+//     SELECT
+//       p.name AS product_name,
+//       c.name AS category_name,
+//       p.price
+//     FROM product AS p
+//     INNER JOIN category AS c
+//     ON c.id = p.category_id
+//     `;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET ALL USERS with ORDERS
 app.get("/users-with-orders", (req, res) => {
@@ -387,19 +387,19 @@ app.get("/users-with-orders", (req, res) => {
 //////////////
 // GET BY ID
 
-// GET PRODUCT BY ID
-app.get("/products/:id", (req, res) => {
-  const productId = req.params.id;
-  const sql = `SELECT * 
-    FROM product 
-    WHERE id = ${productId}`;
+// // GET PRODUCT BY ID
+// app.get("/products/:id", (req, res) => {
+//   const productId = req.params.id;
+//   const sql = `SELECT *
+//     FROM product
+//     WHERE id = ${productId}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET CATEGORY BY ID
 app.get("/categories/:id", (req, res) => {
@@ -427,33 +427,33 @@ app.get("/users/:id", (req, res) => {
   });
 });
 
-// GET ALL P (product) DESC
-app.get("/products/order/by-price-desc", (req, res) => {
-  const sql = `SELECT * 
-    FROM product
-    ORDER BY price
-    DESC;`;
+// // GET ALL P (product) DESC
+// app.get("/products/order/by-price-desc", (req, res) => {
+//   const sql = `SELECT *
+//     FROM product
+//     ORDER BY price
+//     DESC;`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
-// GET product by name
-app.get("/products/name/:name", (req, res) => {
-  const productName = req.params.name;
-  const sql = `SELECT * 
-    FROM product 
-    WHERE name = '${productName}'`;
+// // GET product by name
+// app.get("/products/name/:name", (req, res) => {
+//   const productName = req.params.name;
+//   const sql = `SELECT *
+//     FROM product
+//     WHERE name = '${productName}'`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 /////////////////
 // DLEETE BY ID

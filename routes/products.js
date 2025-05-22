@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../config/database");
 
 // GET ALL P (product)
-app.get("/products", (req, res) => {
+router.get("/", (req, res) => {
   const sql = `SELECT * FROM product;`;
 
   db.query(sql, (err, result) => {
@@ -14,7 +14,7 @@ app.get("/products", (req, res) => {
 });
 
 // ADD PRODUCT (by POST method)
-app.post("/products", (req, res) => {
+router.post("/products", (req, res) => {
   const newProduct = {
     category_id: req.body.category_id,
     name: req.body.name,
@@ -43,7 +43,7 @@ app.post("/products", (req, res) => {
 });
 
 // UPDATE PRODUCT (by PUT method)
-app.put("/products/id/:id", (req, res) => {
+router.put("/products/id/:id", (req, res) => {
   const productId = +req.params.id;
   const { category_id, name, price } = req.body;
   const sql = `UPDATE product SET 
@@ -58,3 +58,79 @@ app.put("/products/id/:id", (req, res) => {
     res.send({ message: `Product ${productId} has been updated.`, result });
   });
 });
+
+// GET ALL PRODUCTS with CATEGORIES
+router.get("/products-with-categories", (req, res) => {
+  const sql = `
+    SELECT 
+      p.name AS product_name,
+      c.name AS category_name,
+      p.price
+    FROM product AS p
+    INNER JOIN category AS c
+    ON c.id = p.category_id
+    `;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET PRODUCT BY ID
+router.get("/products/:id", (req, res) => {
+  const productId = req.params.id;
+  const sql = `SELECT * 
+    FROM product 
+    WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET ALL P (product) DESC
+router.get("/products/order/by-price-desc", (req, res) => {
+  const sql = `SELECT * 
+    FROM product
+    ORDER BY price
+    DESC;`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// GET product by name
+router.get("/products/name/:name", (req, res) => {
+  const productName = req.params.name;
+  const sql = `SELECT * 
+    FROM product 
+    WHERE name = '${productName}'`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// DELETE PRODUCT BY ID
+router.delete("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+  const sql = `DELETE FROM product 
+    WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: `Product ${productId} has been deleted.` });
+  });
+});
+
+module.exports = router;

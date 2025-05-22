@@ -186,8 +186,19 @@ app.post("/products", (req, res) => {
     price: req.body.price,
   };
 
-  const sql = `INSERT INTO product (category_id, name, price)
-    VALUES (${newProduct.category_id}, '${newProduct.name}', ${newProduct.price});`;
+  const { category_id, name, price } = req.body;
+
+  const sql = `
+    INSERT INTO product (
+      category_id, 
+      name, 
+      price
+    )
+    VALUES (
+      ${newProduct.category_id}, 
+      '${newProduct.name}', 
+      ${newProduct.price}
+    );`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -195,6 +206,29 @@ app.post("/products", (req, res) => {
     res.send({ message: "New product added successfully.", result });
   });
 });
+
+// ADD USER (by POST method)
+app.post("/users", (req, res) => {
+  const { username, email } = req.body;
+  const sql = `
+    INSERT INTO user (
+      username,
+      email  
+    )
+    VALUES (
+      '${username}',
+      '${email}'
+    );`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: "New user registered successfully", result });
+  });
+});
+
+/////////////////
+// UPDATE STUFF
 
 // UPDATE PRODUCT (by PUT method)
 app.put("/products/id/:id", (req, res) => {

@@ -13,6 +13,15 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+db.connect((err) => {
+  if (err) {
+    console.log("Error connecting to MYSQL:", err.message);
+    // process.exit(1)
+  } else {
+    console.log("Connected to MySQL database.");
+  }
+});
+
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
 

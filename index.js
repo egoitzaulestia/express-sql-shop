@@ -22,6 +22,8 @@ db.connect((err) => {
   }
 });
 
+app.use("products", require("./routes/products"));
+
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
 
@@ -187,34 +189,34 @@ app.post("/categories", (req, res) => {
   });
 });
 
-// ADD PRODUCT (by POST method)
-app.post("/products", (req, res) => {
-  const newProduct = {
-    category_id: req.body.category_id,
-    name: req.body.name,
-    price: req.body.price,
-  };
+// // ADD PRODUCT (by POST method)
+// app.post("/products", (req, res) => {
+//   const newProduct = {
+//     category_id: req.body.category_id,
+//     name: req.body.name,
+//     price: req.body.price,
+//   };
 
-  const { category_id, name, price } = req.body;
+//   const { category_id, name, price } = req.body;
 
-  const sql = `
-    INSERT INTO product (
-      category_id, 
-      name, 
-      price
-    )
-    VALUES (
-      ${newProduct.category_id}, 
-      '${newProduct.name}', 
-      ${newProduct.price}
-    );`;
+//   const sql = `
+//     INSERT INTO product (
+//       category_id,
+//       name,
+//       price
+//     )
+//     VALUES (
+//       ${newProduct.category_id},
+//       '${newProduct.name}',
+//       ${newProduct.price}
+//     );`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New product added successfully.", result });
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: "New product added successfully.", result });
+//   });
+// });
 
 // ADD USER (by POST method)
 app.post("/users", (req, res) => {
@@ -247,22 +249,22 @@ app.post("/orders", (req, res) => {
 /////////////////
 // UPDATE STUFF
 
-// UPDATE PRODUCT (by PUT method)
-app.put("/products/id/:id", (req, res) => {
-  const productId = +req.params.id;
-  const { category_id, name, price } = req.body;
-  const sql = `UPDATE product SET 
-    category_id = ${category_id}, 
-    name = '${name}', 
-    price = ${price}
-    WHERE id = ${productId};`;
+// // UPDATE PRODUCT (by PUT method)
+// app.put("/products/id/:id", (req, res) => {
+//   const productId = +req.params.id;
+//   const { category_id, name, price } = req.body;
+//   const sql = `UPDATE product SET
+//     category_id = ${category_id},
+//     name = '${name}',
+//     price = ${price}
+//     WHERE id = ${productId};`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `Product ${productId} has been updated.`, result });
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: `Product ${productId} has been updated.`, result });
+//   });
+// });
 
 // UPDATE CATEGORY (by PUT method)
 app.put("categories/id/:id", (req, res) => {

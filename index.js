@@ -26,7 +26,7 @@ app.get("/createDatabase", (req, res) => {
 });
 
 // DROP DATABASE endpoint to erase the database
-app.get("/dropDB", (req, res) => {
+app.get("/dropDatabase", (req, res) => {
   const dbName = "expressSqlShopDB";
   const sql = `DROP DATABASE ${dbName}`;
 
@@ -39,39 +39,74 @@ app.get("/dropDB", (req, res) => {
 
 // CREATE TABLE 'category'
 app.get("/createCategoryTable", (req, res) => {
-  const sql = `
-    CREATE TABLE category (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100)
-        ) ENGINE=InnoDB`;
+  const sql = `CREATE TABLE category (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+    ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Table category created...`);
+    res.send(`Table category has been created.`);
   });
 });
 
 // CREATE TABLE 'product'
 app.get("/createProductTable", (req, res) => {
-  const sql = `
-    CREATE TABLE product (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        category_id INT,
-        name VARCHAR(150), 
-        price DECIMAL(10,2), 
+  const sql = `CREATE TABLE product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT,
+    name VARCHAR(150), 
+    price DECIMAL(10,2), 
 
-        CONSTRAINT fk_productCategory
-        FOREIGN KEY (category_id)
-        REFERENCES category(id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-        ) ENGINE=InnoDB`;
+    CONSTRAINT fk_productCategory
+    FOREIGN KEY (category_id)
+    REFERENCES category(id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+    ) ENGINE=InnoDB`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Table product created...`);
+    res.send(`Table product has been created.`);
+  });
+});
+
+// CREATE TABLE 'user'
+app.get("/createUserTable", (req, res) => {
+  const sql = `CREATE TABLE user (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(80),
+  email VARCHAR(120)
+  ) ENGINE=InnoDB`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(`Table user has been created.`);
+  });
+});
+
+// CREATE TABLE 'orders'
+app.get("/createOrdersTable", (req, res) => {
+  const sql = `CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total DECIMAL(10, 2) NOT NULL,
+
+  CONSTRAINT fk_order_user
+    FOREIGN KEY (user_id)
+    REFERENCES user(id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+  ) ENGINE=InnoDB`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(`Table orders has been created.`);
   });
 });
 
@@ -83,7 +118,7 @@ app.get("/dropTable/:table", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Table ${tableName} has been erased...`);
+    res.send(`Table ${tableName} has been deleted.`);
   });
 });
 
@@ -96,7 +131,7 @@ app.post("/categories", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send({ message: "New category added correctly", result });
+    res.send({ message: "New category added successfully.", result });
   });
 });
 
@@ -114,7 +149,7 @@ app.post("/products", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send({ message: "Product added correctly", result });
+    res.send({ message: "New product added successfully.", result });
   });
 });
 
@@ -131,7 +166,7 @@ app.put("/products/id/:id", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Product ${productId} has been updated...`);
+    res.send(`Product ${productId} has been updated.`);
   });
 });
 
@@ -146,7 +181,7 @@ app.put("categories/id/:id", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(`Category ${productId} has been updated`);
+    res.send(`Category ${productId} has been updated.`);
   });
 });
 
@@ -232,16 +267,30 @@ app.get("/products/order/by-price-desc", (req, res) => {
   });
 });
 
+// GET product by name
 app.get("/products/name/:name", (req, res) => {
   const productName = req.params.name;
   const sql = `SELECT * 
     FROM product 
-    WHERE name = ?`;
+    WHERE name = '${productName}'`;
 
-  db.query(sql, [req.params.name], (err, result) => {
+  db.query(sql, (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
+  });
+});
+
+// DELETE product
+app.delete("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+  const sql = `DELETE FROM product 
+    WHERE id = ${productId}`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send({ message: `Product ${productId} has been deleted.` });
   });
 });
 

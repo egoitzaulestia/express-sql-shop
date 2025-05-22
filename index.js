@@ -22,6 +22,7 @@ db.connect((err) => {
   }
 });
 
+app.use("/categories", require("./routes/categories"));
 app.use("/products", require("./routes/products"));
 
 //////////////////////////////////////

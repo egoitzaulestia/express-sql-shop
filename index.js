@@ -25,6 +25,7 @@ db.connect((err) => {
 app.use("/categories", require("./routes/categories"));
 app.use("/products", require("./routes/products"));
 app.use("/users", require("./routes/users"));
+app.use("/orders", require("./routes/orders"));
 
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
@@ -234,19 +235,19 @@ app.get("/dropTable/:table", (req, res) => {
 //   });
 // });
 
-// ADD ORDER (by POST method)
-app.post("/orders", (req, res) => {
-  const { user_id, total } = req.body;
-  const sql = `
-    INSERT INTO orders (user_id, total)
-    VALUES (?, ?)`;
+// // ADD ORDER (by POST method)
+// app.post("/orders", (req, res) => {
+//   const { user_id, total } = req.body;
+//   const sql = `
+//     INSERT INTO orders (user_id, total)
+//     VALUES (?, ?)`;
 
-  db.query(sql, [user_id, total], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New order registered successfully", result });
-  });
-});
+//   db.query(sql, [user_id, total], (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: "New order registered successfully", result });
+//   });
+// });
 
 /////////////////
 // UPDATE STUFF
@@ -335,16 +336,16 @@ app.post("/orders", (req, res) => {
 //   });
 // });
 
-// GET ALL ORDERS
-app.get("/orders", (req, res) => {
-  const sql = `SELECT * FROM orders;`;
+// // GET ALL ORDERS
+// app.get("/orders", (req, res) => {
+//   const sql = `SELECT * FROM orders;`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 ////////////////////////////
 // GET ALL with INNER JOIN
@@ -417,17 +418,17 @@ app.get("/orders", (req, res) => {
 //   });
 // });
 
-// GET USER BY ID
-app.get("/users/:id", (req, res) => {
-  const userId = req.params.id;
-  const sql = `SELECT * FROM user WHERE id = ?`;
+// // GET USER BY ID
+// app.get("/users/:id", (req, res) => {
+//   const userId = req.params.id;
+//   const sql = `SELECT * FROM user WHERE id = ?`;
 
-  db.query(sql, [userId], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, [userId], (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // // GET ALL P (product) DESC
 // app.get("/products/order/by-price-desc", (req, res) => {

@@ -13,6 +13,18 @@ router.get("/", (req, res) => {
   });
 });
 
+// GET USER BY ID
+app.get("/:id", (req, res) => {
+  const userId = req.params.id;
+  const sql = `SELECT * FROM user WHERE id = ?`;
+
+  db.query(sql, [userId], (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
 // GET ALL USERS with ORDERS
 router.get("/with-orders", (req, res) => {
   const sql = `

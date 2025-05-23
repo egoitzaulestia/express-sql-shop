@@ -38,20 +38,37 @@ This is a backend project developed using **Node.js**, **Express.js**, and **MyS
 
 📦 project-root
 ├── 📁 config
+
 │ ├── database.js # DB connection (with envirinment variables credentials)
+
 │ └── database.example.js # Template without credentials
+
 ├── 📁 controllers
+
 │ ├── ProductController.js
+
 │ ├── CategoryController.js
+
 │ ├── UserController.js
+
 │ └── OrderController.js
+
 ├── 📁 routes
+
 │ ├── products.js
+
 │ ├── categories.js
+
 │ ├── users.js
+
 │ └── orders.js
+
 ├── 📄 .env.example # Template without envirinment variables credentials
+
 ├── 📁 node_modules
+
 ├── 📄 app.js # Main server entrypoint
+
 ├── 📄 package.json # Dependencies & scripts
+
 └── 📄 README.md # Project overview

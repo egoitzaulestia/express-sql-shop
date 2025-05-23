@@ -2,8 +2,6 @@
 
 This is a backend project developed using **Node.js**, **Express.js**, and **MySQL**. It demonstrates how to build a RESTful API following the **MVC architecture**. The project includes endpoints for managing products, categories, users, and orders, and it interacts with a MySQL database.
 
-> 🚧 README still in progress...
-
 ---
 
 ## 🚀 Tech Stack
@@ -34,41 +32,16 @@ This is a backend project developed using **Node.js**, **Express.js**, and **MyS
 
 ---
 
-## 🧱 Project Structure
+## 📊 Database Schema
 
-📦 project-root
-├── 📁 config
+Below is the current MySQL schema as visualized in DBeaver:
 
-│ ├── database.js # DB connection (with envirinment variables credentials)
+![Database Schema](./assets/express-sql-shop-DB.png)
 
-│ └── database.example.js # Template without credentials
-
-├── 📁 controllers
-
-│ ├── ProductController.js
-
-│ ├── CategoryController.js
-
-│ ├── UserController.js
-
-│ └── OrderController.js
-
-├── 📁 routes
-
-│ ├── products.js
-
-│ ├── categories.js
-
-│ ├── users.js
-
-│ └── orders.js
-
-├── 📄 .env.example # Template without envirinment variables credentials
-
-├── 📁 node_modules
-
-├── 📄 app.js # Main server entrypoint
-
-├── 📄 package.json # Dependencies & scripts
-
-└── 📄 README.md # Project overview
+> **Relations**
+>
+> - **user** → **orders** (1-to-many)
+> - **orders** → **order_product** (1-to-many)
+> - **product** → **order_product** (1-to-many)
+> - **product** → **category** (many-to-1)
+> - **orders** ↔ **product** (many-to-many via `order_product`)

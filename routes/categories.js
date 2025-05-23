@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
+const CategoryController = require("../controllers/CategoryController");
 
 // GET ALL CATEGORIES
 router.get("/", (req, res) => {
@@ -28,17 +29,7 @@ router.get("/id/:id", (req, res) => {
 });
 
 // ADD CATEGORY (by POST method)
-router.post("/create", (req, res) => {
-  const newCategory = req.body.name;
-  const sql = `INSERT INTO category (name) 
-    VALUES ('${newCategory}')`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New category added successfully.", result });
-  });
-});
+router.post("/create", CategoryController.create);
 
 // UPDATE CATEGORY (by PUT method)
 router.put("/id/:id", (req, res) => {

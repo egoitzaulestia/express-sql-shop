@@ -67,6 +67,9 @@ const UserController = {
     });
   },
 
+  // For this controller method we use 2 query:
+  // First query: deletes any order of the user, if not the user cannot be deleted doe to the MySQL restriction we did when we created the 'orders' table
+  // Second query: deletes the user eventually
   delete(req, res) {
     const userId = req.params.id;
 

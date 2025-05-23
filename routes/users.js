@@ -1,17 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
+const UserController = require("../controllers/UserController");
 
 // GET ALL USERS
-router.get("/", (req, res) => {
-  const sql = `SELECT * FROM user;`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/", UserController.getAll);
 
 // GET USER BY ID
 router.get("/id/:id", (req, res) => {

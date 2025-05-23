@@ -140,7 +140,7 @@ router.get("/table-order-product", (req, res) => {
 });
 
 // DROP TABLE
-app.get("/dropTable/:table", (req, res) => {
+router.get("/dropTable/:table", (req, res) => {
   const tableName = req.params.table;
   const sql = `DROP TABLE ${tableName}`;
 

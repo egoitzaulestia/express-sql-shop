@@ -24,6 +24,7 @@ db.connect((err) => {
 
 app.use("/categories", require("./routes/categories"));
 app.use("/products", require("./routes/products"));
+app.use("/users", require("./routes/users"));
 
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
@@ -312,16 +313,16 @@ app.put("/users/id/:id", (req, res) => {
 //   });
 // });
 
-// GET ALL C (categories)
-app.get("/categories", (req, res) => {
-  const sql = `SELECT * FROM category;`;
+// // GET ALL C (categories)
+// app.get("/categories", (req, res) => {
+//   const sql = `SELECT * FROM category;`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET ALL USERS
 app.get("/users", (req, res) => {
@@ -459,18 +460,18 @@ app.get("/users/:id", (req, res) => {
 /////////////////
 // DLEETE BY ID
 
-// DELETE PRODUCT BY ID
-app.delete("/products/:id", (req, res) => {
-  const productId = +req.params.id;
-  const sql = `DELETE FROM product 
-    WHERE id = ${productId}`;
+// // DELETE PRODUCT BY ID
+// app.delete("/products/:id", (req, res) => {
+//   const productId = +req.params.id;
+//   const sql = `DELETE FROM product
+//     WHERE id = ${productId}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `Product ${productId} has been deleted.` });
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: `Product ${productId} has been deleted.` });
+//   });
+// });
 
 // DELETE USER BY ID
 app.delete("/users/:id", (req, res) => {

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
 
-// GET ALL P (product)
+// GET ALL PRODUCTS
 router.get("/", (req, res) => {
   const sql = `SELECT * FROM product;`;
 
@@ -15,27 +15,12 @@ router.get("/", (req, res) => {
 
 // ADD PRODUCT (by POST method)
 router.post("/create", (req, res) => {
-  const newProduct = {
-    category_id: req.body.category_id,
-    name: req.body.name,
-    price: req.body.price,
-  };
-
   const { category_id, name, price } = req.body;
-
   const sql = `
-    INSERT INTO product (
-      category_id, 
-      name, 
-      price
-    )
-    VALUES (
-      ${newProduct.category_id}, 
-      '${newProduct.name}', 
-      ${newProduct.price}
-    );`;
+    INSERT INTO product (category_id, name, price)
+    VALUES ( ?, ?, ? );`;
 
-  db.query(sql, (err, result) => {
+  db.query(sql, [category_id, name, price], (err, result) => {
     if (err) throw err;
     console.log(result);
     res.send({ message: "New product added successfully.", result });
@@ -92,7 +77,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
-// GET ALL P (product) DESC
+// GET ALL PRODUCTS DESC
 router.get("/order/by-price-desc", (req, res) => {
   const sql = `SELECT * 
     FROM product

@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 // GET USER BY ID
-app.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const userId = req.params.id;
   const sql = `SELECT * FROM user WHERE id = ?`;
 

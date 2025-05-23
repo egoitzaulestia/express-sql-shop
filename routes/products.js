@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 // ADD PRODUCT (by POST method)
-router.post("/products", (req, res) => {
+router.post("/create", (req, res) => {
   const newProduct = {
     category_id: req.body.category_id,
     name: req.body.name,
@@ -43,7 +43,7 @@ router.post("/products", (req, res) => {
 });
 
 // UPDATE PRODUCT (by PUT method)
-router.put("/products/id/:id", (req, res) => {
+router.put("/id/:id", (req, res) => {
   const productId = +req.params.id;
   const { category_id, name, price } = req.body;
   const sql = `UPDATE product SET 
@@ -60,7 +60,7 @@ router.put("/products/id/:id", (req, res) => {
 });
 
 // GET ALL PRODUCTS with CATEGORIES
-router.get("/products-with-categories", (req, res) => {
+router.get("/with-categories", (req, res) => {
   const sql = `
     SELECT 
       p.name AS product_name,
@@ -79,7 +79,7 @@ router.get("/products-with-categories", (req, res) => {
 });
 
 // GET PRODUCT BY ID
-router.get("/products/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const productId = req.params.id;
   const sql = `SELECT * 
     FROM product 
@@ -93,7 +93,7 @@ router.get("/products/:id", (req, res) => {
 });
 
 // GET ALL P (product) DESC
-router.get("/products/order/by-price-desc", (req, res) => {
+router.get("/order/by-price-desc", (req, res) => {
   const sql = `SELECT * 
     FROM product
     ORDER BY price
@@ -107,7 +107,7 @@ router.get("/products/order/by-price-desc", (req, res) => {
 });
 
 // GET product by name
-router.get("/products/name/:name", (req, res) => {
+router.get("/name/:name", (req, res) => {
   const productName = req.params.name;
   const sql = `SELECT * 
     FROM product 
@@ -121,7 +121,7 @@ router.get("/products/name/:name", (req, res) => {
 });
 
 // DELETE PRODUCT BY ID
-router.delete("/products/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const productId = +req.params.id;
   const sql = `DELETE FROM product 
     WHERE id = ${productId}`;

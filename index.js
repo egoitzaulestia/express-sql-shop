@@ -177,18 +177,18 @@ app.get("/dropTable/:table", (req, res) => {
 //////////////
 // ADD STUFF
 
-// ADD CATEGORY (by POST method)
-app.post("/categories", (req, res) => {
-  const newCategory = req.body.name;
-  const sql = `INSERT INTO category (name) 
-    VALUES ('${newCategory}')`;
+// // ADD CATEGORY (by POST method)
+// app.post("/categories", (req, res) => {
+//   const newCategory = req.body.name;
+//   const sql = `INSERT INTO category (name)
+//     VALUES ('${newCategory}')`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New category added successfully.", result });
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: "New category added successfully.", result });
+//   });
+// });
 
 // // ADD PRODUCT (by POST method)
 // app.post("/products", (req, res) => {
@@ -267,20 +267,20 @@ app.post("/orders", (req, res) => {
 //   });
 // });
 
-// UPDATE CATEGORY (by PUT method)
-app.put("categories/id/:id", (req, res) => {
-  const productId = req.params.id;
-  const { name } = req.body;
-  const sql = `UPDATE category SET
-    name = '${name}'
-    WHERE id = ${productId};`;
+// // UPDATE CATEGORY (by PUT method)
+// app.put("/categories/id/:id", (req, res) => {
+//   const productId = req.params.id;
+//   const { name } = req.body;
+//   const sql = `UPDATE category SET
+//     name = '${name}'
+//     WHERE id = ${productId};`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `Category ${productId} has been updated.`, result });
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: `Category ${productId} has been updated.`, result });
+//   });
+// });
 
 // UPDATE USER (by PUT method)
 app.put("/users/id/:id", (req, res) => {

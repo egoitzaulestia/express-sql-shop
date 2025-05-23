@@ -1,121 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
+const ProductController = require("../controllers/ProductController");
 
 // GET ALL PRODUCTS
-router.get("/", (req, res) => {
-  const sql = `SELECT * FROM product;`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/", ProductController.getAll);
 
 // ADD PRODUCT (by POST method)
-router.post("/create", (req, res) => {
-  const { category_id, name, price } = req.body;
-  const sql = `
-    INSERT INTO product (category_id, name, price)
-    VALUES ( ?, ?, ? );`;
-
-  db.query(sql, [category_id, name, price], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New product added successfully.", result });
-  });
-});
+router.post("/create", ProductController.create);
 
 // UPDATE PRODUCT (by PUT method)
-router.put("/id/:id", (req, res) => {
-  const productId = +req.params.id;
-  const { category_id, name, price } = req.body;
-  const sql = `UPDATE product SET 
-    category_id = ${category_id}, 
-    name = '${name}', 
-    price = ${price}
-    WHERE id = ${productId};`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `Product ${productId} has been updated.`, result });
-  });
-});
+router.put("/id/:id", ProductController.updateProduct);
 
 // GET ALL PRODUCTS with CATEGORIES
-router.get("/with-categories", (req, res) => {
-  const sql = `
-    SELECT 
-      p.name AS product_name,
-      c.name AS category_name,
-      p.price
-    FROM product AS p
-    INNER JOIN category AS c
-    ON c.id = p.category_id
-    `;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/with-categories", ProductController.getAllWithCategories);
 
 // GET PRODUCT BY ID
-router.get("/:id", (req, res) => {
-  const productId = req.params.id;
-  const sql = `SELECT * 
-    FROM product 
-    WHERE id = ${productId}`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/id/:id", ProductController.getById);
 
 // GET ALL PRODUCTS DESC
-router.get("/order/by-price-desc", (req, res) => {
-  const sql = `SELECT * 
-    FROM product
-    ORDER BY price
-    DESC;`;
+router.get("/order/by-price-desc", ProductController.orderByPriceDesc);
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
-
-// GET product by name
-router.get("/name/:name", (req, res) => {
-  const productName = req.params.name;
-  const sql = `SELECT * 
-    FROM product 
-    WHERE name = '${productName}'`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+// GET PRODUCT BY NAME
+router.get("/name/:name", ProductController.getByName);
 
 // DELETE PRODUCT BY ID
-router.delete("/:id", (req, res) => {
-  const productId = +req.params.id;
-  const sql = `DELETE FROM product 
-    WHERE id = ${productId}`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `Product ${productId} has been deleted.` });
-  });
-});
+router.delete("/:id", ProductController.deleteProduct);
 
 module.exports = router;

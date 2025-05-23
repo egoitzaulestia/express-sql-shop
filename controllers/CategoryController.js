@@ -10,6 +10,7 @@ const CategoryController = {
       res.send(result);
     });
   },
+
   getById(req, res) {
     const productId = req.params.id;
     const sql = `SELECT * 
@@ -22,6 +23,7 @@ const CategoryController = {
       res.send(result);
     });
   },
+
   create(req, res) {
     const newCategory = req.body.name;
     const sql = `INSERT INTO category (name) 
@@ -33,6 +35,7 @@ const CategoryController = {
       res.send({ message: "New category added successfully.", result });
     });
   },
+
   updateCategory(req, res) {
     const productId = req.params.id;
     const { name } = req.body;

@@ -4,15 +4,7 @@ const db = require("../config/database");
 const CategoryController = require("../controllers/CategoryController");
 
 // GET ALL CATEGORIES
-router.get("/", (req, res) => {
-  const sql = `SELECT * FROM category;`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/", CategoryController.getAll);
 
 // GET CATEGORY BY ID
 router.get("/id/:id", (req, res) => {

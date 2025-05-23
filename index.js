@@ -22,159 +22,164 @@ db.connect((err) => {
   }
 });
 
+app.use("/create", require("./routes/create"));
 app.use("/categories", require("./routes/categories"));
 app.use("/products", require("./routes/products"));
 app.use("/users", require("./routes/users"));
 app.use("/orders", require("./routes/orders"));
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
 
-// CREATE DATABASE endpoint to create the database
-app.get("/create-database", (req, res) => {
-  const dbName = "expressSqlShopDB";
-  const sql = `CREATE DATABASE ${dbName}`;
+// // CREATE DATABASE endpoint to create the database
+// app.get("/create-database", (req, res) => {
+//   const dbName = "expressSqlShopDB";
+//   const sql = `CREATE DATABASE ${dbName}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Database ${dbName} created successfully...`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Database ${dbName} created successfully...`);
+//   });
+// });
 
-// DROP DATABASE endpoint to erase the database
-app.get("/drop-database", (req, res) => {
-  const dbName = "expressSqlShopDB";
-  const sql = `DROP DATABASE ${dbName}`;
+// // DROP DATABASE endpoint to erase the database
+// app.get("/drop-database", (req, res) => {
+//   const dbName = "expressSqlShopDB";
+//   const sql = `DROP DATABASE ${dbName}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`The ${dbName} database has been erased...`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`The ${dbName} database has been erased...`);
+//   });
+// });
 
 /////////////////////////////////
 // CREATE TABLES and DROP TABLE
 
-// CREATE TABLE 'category'
-app.get("/create-category-table", (req, res) => {
-  const sql = `
-  CREATE TABLE category (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100)
-  ) ENGINE=InnoDB`;
+// // CREATE TABLE 'category'
+// app.get("/create-category-table", (req, res) => {
+//   const sql = `
+//   CREATE TABLE category (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     name VARCHAR(100)
+//   ) ENGINE=InnoDB`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table category has been created.`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Table category has been created.`);
+//   });
+// });
 
-// CREATE TABLE 'product'
-app.get("/create-product-table", (req, res) => {
-  const sql = `
-  CREATE TABLE product (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
-    name VARCHAR(150), 
-    price DECIMAL(10,2), 
+// // CREATE TABLE 'product'
+// app.get("/create-product-table", (req, res) => {
+//   const sql = `
+//   CREATE TABLE product (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     category_id INT,
+//     name VARCHAR(150),
+//     price DECIMAL(10,2),
 
-    CONSTRAINT fk_productCategory
-    FOREIGN KEY (category_id)
-    REFERENCES category(id)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT
-  ) ENGINE=InnoDB`;
+//     CONSTRAINT fk_productCategory
+//     FOREIGN KEY (category_id)
+//     REFERENCES category(id)
+//     ON UPDATE CASCADE
+//     ON DELETE RESTRICT
+//   ) ENGINE=InnoDB`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table product has been created.`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Table product has been created.`);
+//   });
+// });
 
-// CREATE TABLE 'user'
-app.get("/create-user-table", (req, res) => {
-  const sql = `
-  CREATE TABLE user (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(80),
-    email VARCHAR(120)
-  ) ENGINE=InnoDB`;
+// // CREATE TABLE 'user'
+// app.get("/create-user-table", (req, res) => {
+//   const sql = `
+//   CREATE TABLE user (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     username VARCHAR(80),
+//     email VARCHAR(120)
+//   ) ENGINE=InnoDB`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table user has been created.`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Table user has been created.`);
+//   });
+// });
 
-// CREATE TABLE 'orders'
-app.get("/create-orders-table", (req, res) => {
-  const sql = `
-  CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    total DECIMAL(10, 2) NOT NULL,
+// // CREATE TABLE 'orders'
+// app.get("/create-orders-table", (req, res) => {
+//   const sql = `
+//   CREATE TABLE orders (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     user_id INT NOT NULL,
+//     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     total DECIMAL(10, 2) NOT NULL,
 
-    CONSTRAINT fk_order_user
-      FOREIGN KEY (user_id)
-      REFERENCES user(id)
-      ON UPDATE CASCADE
-      ON DELETE RESTRICT
-  ) ENGINE=InnoDB`;
+//     CONSTRAINT fk_order_user
+//       FOREIGN KEY (user_id)
+//       REFERENCES user(id)
+//       ON UPDATE CASCADE
+//       ON DELETE RESTRICT
+//   ) ENGINE=InnoDB`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table orders has been created.`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Table orders has been created.`);
+//   });
+// });
 
-// // CREATE TABLE 'order_productt' => (orderS + product)
-app.get("/create-order-product-table", (req, res) => {
-  const sql = `
-    CREATE TABLE order_product (
-      order_id INT NOT NULL,
-      product_id INT NOT NULL,
-      quantity INT NOT NULL DEFAULT 1,
-      price_each DECIMAL(10,2) NOT NULL,
+// // // CREATE TABLE 'order_productt' => (orderS + product)
+// app.get("/create-order-product-table", (req, res) => {
+//   const sql = `
+//     CREATE TABLE order_product (
+//       order_id INT NOT NULL,
+//       product_id INT NOT NULL,
+//       quantity INT NOT NULL DEFAULT 1,
+//       price_each DECIMAL(10,2) NOT NULL,
 
-      PRIMARY KEY (order_id, product_id),
+//       PRIMARY KEY (order_id, product_id),
 
-      CONSTRAINT fk_op_order
-        FOREIGN KEY (order_id)
-        REFERENCES orders(id)
-        ON DELETE CASCADE,
+//       CONSTRAINT fk_op_order
+//         FOREIGN KEY (order_id)
+//         REFERENCES orders(id)
+//         ON DELETE CASCADE,
 
-      CONSTRAINT fk_op_product
-        FOREIGN KEY (product_id)
-        REFERENCES product(id)
-        ON DELETE RESTRICT
-    ) ENGINE=InnoDB;
-  `;
+//       CONSTRAINT fk_op_product
+//         FOREIGN KEY (product_id)
+//         REFERENCES product(id)
+//         ON DELETE RESTRICT
+//     ) ENGINE=InnoDB;
+//   `;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send("Table order_product has been created.");
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send("Table order_product has been created.");
+//   });
+// });
 
-// DROP TABLE
-app.get("/dropTable/:table", (req, res) => {
-  const tableName = req.params.table;
-  const sql = `DROP TABLE ${tableName}`;
+// // DROP TABLE
+// app.get("/dropTable/:table", (req, res) => {
+//   const tableName = req.params.table;
+//   const sql = `DROP TABLE ${tableName}`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table ${tableName} has been deleted.`);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(`Table ${tableName} has been deleted.`);
+//   });
+// });
 
 //////////////
 // ADD STUFF
@@ -498,7 +503,3 @@ app.get("/dropTable/:table", (req, res) => {
 //     });
 //   });
 // });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

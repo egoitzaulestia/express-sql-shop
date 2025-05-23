@@ -1,30 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
+const OrderController = require("../controllers/OrderControllers");
 
 // GET ALL ORDERS
-router.get("/orders", (req, res) => {
-  const sql = `SELECT * FROM orders;`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+router.get("/", OrderController.getAll);
 
 // ADD ORDER (by POST method)
-router.post("/create", (req, res) => {
-  const { user_id, total } = req.body;
-  const sql = `
-    INSERT INTO orders (user_id, total)
-    VALUES (?, ?)`;
-
-  db.query(sql, [user_id, total], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New order registered successfully", result });
-  });
-});
+router.post("/create", OrderController.create);
 
 module.exports = router;

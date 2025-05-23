@@ -1,51 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
+const CreateController = require("../controllers/CreateController");
 
 //////////////////////////////////////
 // CREATE DATABASE and DROP DATABASE
 
 // CREATE DATABASE route to create the database
-router.get("/database", (req, res) => {
-  const dbName = "expressSqlShopDB";
-  const sql = `CREATE DATABASE ${dbName}`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Database ${dbName} created successfully...`);
-  });
-});
+router.get("/database", CreateController.createDatabase);
 
 // DROP DATABASE route to drop the database
-router.get("/drop-database", (req, res) => {
-  const dbName = "expressSqlShopDB";
-  const sql = `DROP DATABASE ${dbName}`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`The ${dbName} database has been erased...`);
-  });
-});
+router.get("/drop-database", CreateController.dropDatabase);
 
 /////////////////////////////////
 // CREATE TABLES and DROP TABLE
 
 // CREATE TABLE 'category'
-router.get("/table-category", (req, res) => {
-  const sql = `
-  CREATE TABLE category (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100)
-  ) ENGINE=InnoDB`;
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(`Table category has been created.`);
-  });
-});
+router.get("/table-category", CreateController.createTableCategory);
 
 // CREATE TABLE 'product'
 router.get("/table-product", (req, res) => {

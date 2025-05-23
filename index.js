@@ -220,19 +220,19 @@ app.get("/dropTable/:table", (req, res) => {
 //   });
 // });
 
-// ADD USER (by POST method)
-app.post("/users", (req, res) => {
-  const { username, email } = req.body;
-  const sql = `
-    INSERT INTO user (username, email)
-    VALUES (?, ?);`;
+// // ADD USER (by POST method)
+// app.post("/users", (req, res) => {
+//   const { username, email } = req.body;
+//   const sql = `
+//     INSERT INTO user (username, email)
+//     VALUES (?, ?);`;
 
-  db.query(sql, [username, email], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: "New user registered successfully", result });
-  });
-});
+//   db.query(sql, [username, email], (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: "New user registered successfully", result });
+//   });
+// });
 
 // ADD ORDER (by POST method)
 app.post("/orders", (req, res) => {
@@ -283,21 +283,21 @@ app.post("/orders", (req, res) => {
 //   });
 // });
 
-// UPDATE USER (by PUT method)
-app.put("/users/id/:id", (req, res) => {
-  const userId = req.params.id;
-  const { username, email } = req.body;
-  const sql = `
-    UPDATE user 
-    SET username = ?, email = ?
-    WHERE id = ?;`;
+// // UPDATE USER (by PUT method)
+// app.put("/users/id/:id", (req, res) => {
+//   const userId = req.params.id;
+//   const { username, email } = req.body;
+//   const sql = `
+//     UPDATE user
+//     SET username = ?, email = ?
+//     WHERE id = ?;`;
 
-  db.query(sql, [username, email, userId], (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send({ message: `User ${userId} has been updated.`, result });
-  });
-});
+//   db.query(sql, [username, email, userId], (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send({ message: `User ${userId} has been updated.`, result });
+//   });
+// });
 
 ////////////
 // GET ALL
@@ -324,16 +324,16 @@ app.put("/users/id/:id", (req, res) => {
 //   });
 // });
 
-// GET ALL USERS
-app.get("/users", (req, res) => {
-  const sql = `SELECT * FROM user;`;
+// // GET ALL USERS
+// app.get("/users", (req, res) => {
+//   const sql = `SELECT * FROM user;`;
 
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
-  });
-});
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 // GET ALL ORDERS
 app.get("/orders", (req, res) => {

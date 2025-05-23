@@ -73,4 +73,29 @@ router.put("/id/:id", (req, res) => {
   });
 });
 
+// DELETE USER BY ID
+router.delete("/:id", (req, res) => {
+  const userId = req.params.id;
+
+  const sqlDeleteOrders = `DELETE FROM orders WHERE user_id = ?;`;
+  const sqlDeleteUser = `DELETE FROM user WHERE id = ?;`;
+
+  // We delete any order (due to RESTRICT in table creation)
+  db.query(sqlDeleteOrders, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    console.log(result1);
+
+    // We delete the user
+    db.query(sqlDeleteUser, [userId], (err2, result2) => {
+      if (err2) throw err2;
+      console.log(result2);
+      res.send({
+        message: `User ${userId} and their orders have been deleted.`,
+        ordersDeleted: result1.affectedRows,
+        userDeleted: result2.affectedRows,
+      });
+    });
+  });
+});
+
 module.exports = router;

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
 const ProductController = require("../controllers/ProductController");
 
 // GET ALL PRODUCTS

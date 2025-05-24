@@ -14,22 +14,6 @@ const UserController = {
     });
   },
 
-  // update(req, res) {
-  //   const userId = +req.params.id;
-  //   const { username, email } = req.body;
-
-  //   const sql = `
-  //   UPDATE user
-  //   SET username = ?, email = ?
-  //   WHERE id = ?;`;
-
-  //   db.query(sql, [username, email, userId], (err, result) => {
-  //     if (err) throw err;
-  //     console.log(result);
-  //     res.send({ message: `User ${userId} has been updated.`, result });
-  //   });
-  // },
-
   update(req, res) {
     const userId = +req.params.id;
     const { username, email } = req.body;
@@ -62,45 +46,6 @@ const UserController = {
           result: updateResult,
         });
       });
-    });
-  },
-
-  update2(req, res) {
-    const productId = +req.params.id;
-    const { category_id, name, price } = req.body;
-
-    // First, we check if the product exists
-    const checkSql = `SELECT * FROM product WHERE id = ?`;
-
-    db.query(checkSql, [productId], (err, result) => {
-      if (err) throw err;
-
-      if (result.length === 0) {
-        // Product does not exist
-        return res
-          .status(404)
-          .send({ message: `Product ${productId} does not exist.` });
-      }
-
-      // Product exists, we proceed to update
-      const updateSql = `
-      UPDATE product SET
-        category_id = ?,
-        name = ?,
-        price = ?
-      WHERE id = ?;
-    `;
-      db.query(
-        updateSql,
-        [category_id, name, price, productId],
-        (err, updateResult) => {
-          if (err) throw err;
-          res.send({
-            message: `Product ${productId} has been updated.`,
-            result: updateResult,
-          });
-        }
-      );
     });
   },
 

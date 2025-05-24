@@ -43,7 +43,7 @@ const ProductController = {
           .send({ message: `Product ${productId} does not exist.` });
       }
 
-      // Product exists, proceed to update
+      // Product exists, we proceed to update
       const updateSql = `
       UPDATE product SET
         category_id = ?,

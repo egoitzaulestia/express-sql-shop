@@ -9,7 +9,7 @@ router.get("/", ProductController.getAll);
 router.post("/create", ProductController.create);
 
 // UPDATE PRODUCT (by PUT method)
-router.put("/id/:id", ProductController.updateProduct);
+router.put("/id/:id", ProductController.update);
 
 // GET ALL PRODUCTS with CATEGORIES
 router.get("/with-categories", ProductController.getAllWithCategories);
@@ -24,6 +24,6 @@ router.get("/order/by-price-desc", ProductController.orderByPriceDesc);
 router.get("/name/:name", ProductController.getByName);
 
 // DELETE PRODUCT BY ID
-router.delete("/:id", ProductController.deleteProduct);
+router.delete("/:id", ProductController.delete);
 
 module.exports = router;

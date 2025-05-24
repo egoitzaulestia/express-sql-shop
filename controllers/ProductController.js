@@ -7,7 +7,7 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     });
   },
 
@@ -20,23 +20,48 @@ const ProductController = {
     db.query(sql, [category_id, name, price], (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send({ message: "New product added successfully.", result });
+      res
+        .status(201)
+        .send({ message: "New product added successfully.", result });
     });
   },
 
-  updateProduct(req, res) {
+  update(req, res) {
     const productId = +req.params.id;
     const { category_id, name, price } = req.body;
-    const sql = `UPDATE product SET 
-    category_id = ${category_id}, 
-    name = '${name}', 
-    price = ${price}
-    WHERE id = ${productId};`;
 
-    db.query(sql, (err, result) => {
+    // First, we check if the product exists
+    const checkSql = `SELECT * FROM product WHERE id = ?`;
+
+    db.query(checkSql, [productId], (err, result) => {
       if (err) throw err;
-      console.log(result);
-      res.send({ message: `Product ${productId} has been updated.`, result });
+
+      if (result.length === 0) {
+        // Product does not exist
+        return res
+          .status(404)
+          .send({ message: `Product ${productId} does not exist.` });
+      }
+
+      // Product exists, proceed to update
+      const updateSql = `
+      UPDATE product SET
+        category_id = ?,
+        name = ?,
+        price = ?
+      WHERE id = ?;
+    `;
+      db.query(
+        updateSql,
+        [category_id, name, price, productId],
+        (err, updateResult) => {
+          if (err) throw err;
+          res.status(200).send({
+            message: `Product ${productId} has been updated.`,
+            result: updateResult,
+          });
+        }
+      );
     });
   },
 
@@ -54,12 +79,12 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     });
   },
 
   getById(req, res) {
-    const productId = req.params.id;
+    const productId = +req.params.id;
     const sql = `SELECT * 
     FROM product 
     WHERE id = ${productId}`;
@@ -67,7 +92,7 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     });
   },
 
@@ -80,7 +105,7 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     });
   },
 
@@ -93,11 +118,11 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     });
   },
 
-  deleteProduct(req, res) {
+  delete(req, res) {
     const productId = +req.params.id;
     const sql = `DELETE FROM product 
     WHERE id = ${productId}`;
@@ -105,7 +130,9 @@ const ProductController = {
     db.query(sql, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send({ message: `Product ${productId} has been deleted.` });
+      res
+        .status(200)
+        .send({ message: `Product ${productId} has been deleted.` });
     });
   },
 };

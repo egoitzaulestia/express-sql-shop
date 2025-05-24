@@ -15,7 +15,7 @@ router.get("/with-orders", UserController.getAllWithOrders);
 router.post("/create-user", UserController.create);
 
 // UPDATE USER (by PUT method)
-router.put("/id/:id", UserController.updateNew);
+router.put("/id/:id", UserController.update);
 
 // DELETE USER BY ID
 router.delete("/:id", UserController.delete);

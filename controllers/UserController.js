@@ -30,7 +30,7 @@ const UserController = {
   //   });
   // },
 
-  updateNew(req, res) {
+  update(req, res) {
     const userId = +req.params.id;
     const { username, email } = req.body;
 
